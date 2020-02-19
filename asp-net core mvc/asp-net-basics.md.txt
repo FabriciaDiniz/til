@@ -1,0 +1,13 @@
+- O .NET Core é um framework cross-plataforma e é também uma versão mais leve do .NET framework
+    - é mais leve e flexível por ser mais modularizado
+    - é mais indicado para implantação em containers, porque é mais leve devido à sua característica modular
+- Existem variáveis de ambiente que indicam se a solução deve ser rodada em modo de desenvolvimento ou de produção, é possível mudar isso na aba de debug do projeto
+    - a API de configuração consegue acessar configurações tanto de variáveis de sistema quanto de arquivos de settings
+- O arquivo Startup.cs contém informações de configuração da aplicação
+    - o método ConfigureServices serve para adicionar serviços à aplicação (banco de dados, log , monitoramento, mvc)
+    - o método Configure serve como local onde os serviços adicionados serão utilizados
+        - as requisições feitas no navegador seguem o fluxo descrito nesse método
+- O arquivo launchSettings.json contém informações sobre a porta na qual a aplicação vai estar rodando, configurações do servidor
+- As interfaces são nomeadas com um "I" na frente do nome da classe e servem para reduzir o acoplamento do sistema
+    - para conseguir fazer a injeção de dependências e obter as instâncias se utiliza o IServiceProvider, que é o provedor que obtém as instâncias das classes
+        - o método que obtém as instâncias é o GetService<T>, porém precisa-se configurar o serviço que faz a conexão entre a interface e a classe concreta
