@@ -1,3 +1,20 @@
 - Model
+    - reflete a lógica dos objetos que constituem a aplicação, sua estrutura e relação com o banco de dados
+    - o Entity Framework Core é quem faz o intermédio entre o model e as tabelas do banco de dados
+        - precisa de uma classe de contexto que herde de DbContext para saber lidar com as entidades
+            - o DbContext é uma combinação dos padrões Unit Of Work e Repository
+        - tem que sobrescrever o método OnModelCreating e indicar qual a entidade com que se está trabalhando e indicar (por meio do HasKey) qual atributo corresponde à chave primária
+    - a partir do SQL Server Object Explorer no VS é possível criar uma nova tabela vazia que receberá os dados do modelo e acessar as propriedades da tabela para fazer a conexão com o contexto
+        - os dados da conexão (connectionString) devem ser inseridos no appSettings.json em ConnectionStrings
+    - também é preciso configurar um serviço de acesso ao banco de dados no ConfigureServices (services.AddDbContext)
 - View
+    - mostra os elementos da interface de usuário; contém os códigos html ou equivalentes
+    - os arquivos cshtml devem ter o mesmo nome do método que os invoca
+        - a pasta Shared contém arquivos de layout que serão compartilhados por várias views
+    - o método @RenderBody() no arquivo cshtml indica onde o corpo da view (essencialmente a parte que é chamada pelo controller) será carregado
+    - por convenção, o layout padrão de um aplicativo ASP.NET Core MVC é chamado _Layout.cshtml, que vem incluso na pasta Views/Shared
 - Controller
+    - lida com as interações do usuário, trabalha com o modelo e seleciona a view que será exibida para o usuário
+    - mapeia as rotas por meio do app.UseMvc passando routes e uma expressão lambda para como redirecionar as rotas
+    - cada método retorna um IActionResult
+    - ViewData é um dicionário padrão que leva informações para a view

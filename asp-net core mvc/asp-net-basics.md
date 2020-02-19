@@ -8,6 +8,8 @@
     - o método Configure serve como local onde os serviços adicionados serão utilizados
         - as requisições feitas no navegador seguem o fluxo descrito nesse método
 - O arquivo launchSettings.json contém informações sobre a porta na qual a aplicação vai estar rodando, configurações do servidor
+- O ASP.NET possui um modo de mostrar exceptions que detalha cookies, headers, etc, para o desenvolvedor, com o app.UseDeveloperExceptionPage()
+    - depende da variável de ambiente indicar que a solução deve ser rodada em modo de desenvolvimento
 - As interfaces são nomeadas com um "I" na frente do nome da classe e servem para reduzir o acoplamento do sistema
     - para conseguir fazer a injeção de dependências e obter as instâncias se utiliza o IServiceProvider, que é o provedor que obtém as instâncias das classes
         - o método que obtém as instâncias é o GetService<T>, porém precisa-se configurar o serviço que faz a conexão entre a interface e a classe concreta
