@@ -13,3 +13,30 @@
 - As interfaces são nomeadas com um "I" na frente do nome da classe e servem para reduzir o acoplamento do sistema
     - para conseguir fazer a injeção de dependências e obter as instâncias se utiliza o IServiceProvider, que é o provedor que obtém as instâncias das classes
         - o método que obtém as instâncias é o GetService<T>, porém precisa-se configurar o serviço que faz a conexão entre a interface e a classe concreta
+
+- Roteamento
+    - as funcionalidades de roteamento a seguir só são possíveis por causa do middleware UseMvc     
+    - uma vez que as partes da url são mapeadas para os diferentes placeholders [vou inserir a tradução correta quando eu descobrir], o programa tenta achar os controllers e ações que correspondam a esses placeholders
+        - para buscar os controllers, o programa procura todas as classes que contenham o sufixo Controller, remove esse sufixo do nome e tenta compará-lo com o placeholder vindo da url
+        - depois, ele acha todos os métodos públicos daquele controller e os registra como possíveis ações, comparando com o placeholder vindo da url para achar o equivalente
+        - é possível especificar um valor default para os diferentes placeholders, que faz com que eles não precisem vir na url e o programa ainda vai saber para onde mapear
+            - a sintaxe fica: “{controller=Home}/{action=Index}/{id?}”, com o controller padrão sendo definido como home e a ação padrão sendo definida como Index
+        - é possível especificar que determinada rota só será chamada quando o placeholder for do tipo apropriado
+            - a sintaxe fica: “{controller=Home}/{action=Index}/{id:int?}", onde a rota q contém o id só será mapeada se ele for um inteiro
+    - para customizar rotas para uma determinada ação, basta incluir Route acima do método passando a url customizada e incluir os parâmetros correspondentes na action
+        - a sintaxe fica: [Route(blog/{year:int}/{month:int}/{key})]
+        - a ordem dos placeholders não precisa ser a mesma ordem que os parâmetros são passados para a ação, porque eles são mapeados por nome
+        - é possível aplicar diversas restrições nessa passagem da rota, a sintaxe ficaria: "blog/{year:min(2000)}/{month:range(1,12)}/{key}"
+        - uma rota pode ser “quebrada”, colocando o nome do controller acima da classe para evitar ficar repetindo em todas as ações, porém fazer isso no controller faz com que as urls não possam mais ser gerenciadas pelo roteamento mais geral feito no app.UseMvc, o que faz com que qualquer valor default definido não se aplique e precise ser explicitado na classe do controller (usando, por exemplo, um [Route(“”)] para o index)
+
+- Middleware
+    - funções que são registradas para lidar com requisições em uma ordem específica
+    - quando uma requisição chega, o .NET cria uma instância do pipeline e chama cada uma das funções, para que cada uma possa modificar a requisição antes que a resposta seja enviada para o usuário
+    - podem ser reutilizados em diferentes aplicações (se forem genéricos o suficiente)
+    - os mw são executados na ordem em que eles são registrados
+    - invés de usar o padrão app.Run() que vem no arquivo padrão do projeto e encerra a cadeia de mw quando é executado, deve-se usar o app.Use(), que recebe o contexto e next, que leva para o mw seguinte
+    - para executar um mw apenas em certo path, deve-se adicionar um if checando o path
+        - context.Request.Path.Value.StartsWith()
+    - para servir arquivos estáticos, deve-se utilizar o app.UseFileServer(), que vai analisar a requisição e tentar mapear ela com algum path registrado na pasta wwwroot ou com alguma view
+        - na pasta wwwroot devem ser colocados todos os arquivos estáticos da aplicação, como css e imagens
+    - o app.UseExceptionHandler() pega todas as exceções e trata, levando para uma página de erro apropriada
