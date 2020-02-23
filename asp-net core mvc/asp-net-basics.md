@@ -24,7 +24,7 @@
         - é possível especificar que determinada rota só será chamada quando o placeholder for do tipo apropriado
             - a sintaxe fica: “{controller=Home}/{action=Index}/{id:int?}", onde a rota q contém o id só será mapeada se ele for um inteiro
     - para customizar rotas para uma determinada ação, basta incluir Route acima do método passando a url customizada e incluir os parâmetros correspondentes na action
-        - a sintaxe fica: [Route(blog/{year:int}/{month:int}/{key})]
+        - a sintaxe fica: [Route("blog/{year:int}/{month:int}/{key}")]
         - a ordem dos placeholders não precisa ser a mesma ordem que os parâmetros são passados para a ação, porque eles são mapeados por nome
         - é possível aplicar diversas restrições nessa passagem da rota, a sintaxe ficaria: "blog/{year:min(2000)}/{month:range(1,12)}/{key}"
         - uma rota pode ser “quebrada”, colocando o nome do controller acima da classe para evitar ficar repetindo em todas as ações, porém fazer isso no controller faz com que as urls não possam mais ser gerenciadas pelo roteamento mais geral feito no app.UseMvc, o que faz com que qualquer valor default definido não se aplique e precise ser explicitado na classe do controller (usando, por exemplo, um [Route(“”)] para o index)
