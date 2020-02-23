@@ -1,5 +1,8 @@
 - Model
     - reflete a lógica dos objetos que constituem a aplicação, sua estrutura e relação com o banco de dados
+        - contém a lógica de negócio (processos, regras de validação, integração de sistemas)
+        - idealmente é completamente isolada da plataforma e do ambiente no qual está operando
+    - para o MVC, não importa muito onde as classes de modelo se encontram, elas podem inclusive estar em outro projeto
     - o Entity Framework Core é quem faz o intermédio entre o model e as tabelas do banco de dados
         - precisa de uma classe de contexto que herde de DbContext para saber lidar com as entidades
             - o DbContext é uma combinação dos padrões Unit Of Work e Repository
@@ -7,14 +10,37 @@
     - a partir do SQL Server Object Explorer no VS é possível criar uma nova tabela vazia que receberá os dados do modelo e acessar as propriedades da tabela para fazer a conexão com o contexto
         - os dados da conexão (connectionString) devem ser inseridos no appSettings.json em ConnectionStrings
     - também é preciso configurar um serviço de acesso ao banco de dados no ConfigureServices (services.AddDbContext)
+
 - View
     - mostra os elementos da interface de usuário; contém os códigos html ou equivalentes
+    - a view engine das aplicações ASP.NET MVC se chama Razor, que converte o código em C#, VB ou na própria sintaxe do Razor em HTML
+        - a sintaxe básica do razor consiste em usar @ para renderizar os resultados de qualquer código C#
     - os arquivos cshtml devem ter o mesmo nome do método que os invoca
         - a pasta Shared contém arquivos de layout que serão compartilhados por várias views
-    - o método @RenderBody() no arquivo cshtml indica onde o corpo da view (essencialmente a parte que é chamada pelo controller) será carregado
     - por convenção, o layout padrão de um aplicativo ASP.NET Core MVC é chamado _Layout.cshtml, que vem incluso na pasta Views/Shared
+        - nos arquivos que irão utilizar o layout, deve-se especificar qual o arquivo de layout desejado no começo do código
+            - a sintaxe é: @{ Layout = “_Layout”; }
+        - o método @RenderBody() no arquivo cshtml indica onde o corpo da view (essencialmente a parte que é chamada pelo controller) será carregado
+        - similarmente, pode-se usar o @RenderSection(“nome da section”) para renderizar partes distintas para cada uma das páginas
+            - nesse caso deve-se indicar o conteúdo da section no começo do arquivo
+                - a sintaxe é: @section nome da section { conteúdo da section } e não importa muito se isso vem no começo ou no fim do código
+            - o MVC vai exigir que todas as views que utilizam esse layout implementem a section, e uma maneira de contornar isso é adicionando um novo parâmetro ao RenderSection indicando que essa section não é obrigatória para todas as views
+                - a sintaxe fica: @RenderSection("header", false)
+            - outra maneira de contornar é fazer um if (só colocar um @ na frente que funciona normal), checar se a section foi definida e definir um padrão para quando não tiver definido pela view
+
 - Controller
     - lida com as interações do usuário, trabalha com o modelo e seleciona a view que será exibida para o usuário
+        - contém a lógica de aplicação, controla do workflow
+        - orquestra a interação entre o model e a view
     - mapeia as rotas por meio do app.UseMvc passando routes e uma expressão lambda para como redirecionar as rotas
+    - todas as classes devem ter o sufixo Controller e herdar de Controller
+        - cuidado para nomear a pasta que contém os controllers como “Controllers”, nomear ela no singular pode gerar erro na herança
     - cada método retorna um IActionResult
     - ViewData é um dicionário padrão que leva informações para a view
+    - existem vários tipos de ações que podem ser retornadas por um controller, a mais simples é o ContentResult
+        - o Content deve sempre ser uma string
+    - as ações são apenas métodos, então se você quiser passar dados para elas, você só precisa declarar o parâmetro e o ASP.NET MVC vai popular esse parâmetro automaticamente a partir do que for passado na url
+    - uma maneira de passar dados do controller para a view é por meio do ViewBag, que é um objeto dinâmico acessível tanto para o controller quanto para a view
+        - como é um objeto dinâmico, é possível acessá-lo como se ele já existisse, sem precisar inicializar
+        - o lado ruim é que o Razor não consegue pegar informações sobre os tipos dos campos e nem proteger o código de conflito de tipos; a solução é passar dados de modelos fortemente tipados para a view (simplesmente passando uma instância de um model)
+    - quando se passa um objeto de um modelo fortemente tipado para uma view, é preciso declarar no início do arquivo qual modelo será usado (a sintaxe é @model ExploreCalifornia.Models.Post) e então é possível acessar os atributos do objeto por meio do @Model
