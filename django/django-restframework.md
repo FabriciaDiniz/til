@@ -1,0 +1,17 @@
+- Qualquer configuração global para uma API REST framework são mantidas em um único dicionário de configuração chamado REST_FRAMEWORK no arquivo settings.py.
+- rest_framework deve ser adicionado ao INSTALLED_APPS
+- A serialização é utilizada para auxiliar na representação de dados, e é uma boa prática REST utilizar relações por hiperlink (invés de por PK, por exemplo)
+- O uso de viewsets mantém a lógica de visualização bem organizada e concisa
+  - isso permite que a URL conf da API seja gerada automaticamente, registrando os viewsets com uma classe router
+  - caso seja preciso mais controle sobre as URLs da API, é possível simplesmente voltar a usar as views baseadas em classe e escrever a URL conf explicitamente
+- Autenticação
+  - quando um usuário não autenticado tenta fazer uma requisição 2 respostas HTTP são apropriadas: 401 e 403; a primeira sempre inclui um header WWW-Authenticate que instrui o usuário a respeito de como se autenticar, enquanto o segundo não contém esse header
+  - qual resposta vai ser retornada depende do schema de autenticação
+  - mesmo que vários schemas sejam aplicados às views, apenas um é responsável por definir as respostas HTTP, normalmente a primeira classe setada para a view
+  - basic authentication só é indicada para ambientes de testes, deve-se tomar uma série de cuidados antes de usá-la em produção
+  - token authentication é apropriada para setups cliente-servidor
+- Permissões
+  - a checagem de permissões é o primeiro código que roda em uma view, antes que qualquer outro código possa ser executado
+  - essa checagem normalmente usa a informação de autenticação nas propriedades request.user e request.auth para determinar se a requisição deve ser permitida
+  - as classes padrão de permissão podem ser definidas no settings.py, mas quando se seta novas classes de permissão através de um atributo de classe ou decorators, a view ignora as classes padrão
+  - 
