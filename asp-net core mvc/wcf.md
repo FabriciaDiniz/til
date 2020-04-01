@@ -5,6 +5,8 @@
     - estabelece os métodos que o serviço vai disponibilizar
     - é preciso criar uma classe de serviços que implemente a interface
 - As operações (métodos) devem ser anotadas com [OperationContract]
+- Para que os métodos sejam acessíveis por meio de um navegador, é necessário anotar a classe com [WebInvoke], passando como parâmetros o método http , o formato da resposta (webMessageFormat) e o template da url
+    - System.ServiceModel.Web
 - Classes de model devem ser anotadas com [DataContract]
     - System.Runtime.Serialization
 - Os atributos das classes que serão trafegadas devem ser anotados com [DataMember]
@@ -15,6 +17,7 @@
     - definir os endpoints para o serviço
         - endereço, protocolo (binding), contrato (o serviço em si)
     - alterar o endereço base (host)
+    - é preciso configurar os endpoints para sinalizar q eles são acessíveis por meio de um navegador (em endpoints behavior)
 - No visual studio existe um cliente de teste para testar o serviço
 - É preciso ter uma outra aplicação que suba a dll
     - ServiceHost numa aplicação console
