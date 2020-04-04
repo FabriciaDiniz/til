@@ -1,4 +1,10 @@
-###WCF Service Library - resumo
+### Conceitos básicos
+- WCF é baseado no conceito de comunicação baseada em messagens, e tuso que pode ser modelado como mensagem pode ser representado de uma maneira que permita a criação de uma API unificada para diferentes mecanismos de transporte
+- As mensagens são trocadas entre endpoints e eles definem quais informações são necessárias para a troca de mensagens
+- Um serviço WCF é exposto para o mundo como uma coleção de endpoints
+    - um endpoint é um conceito relacionado a troca de mensagens; ele possui uma localização (endereço) que define por onde as mensagens podem ser recebidas/enviadas, uma especificação do mecanismo de comunicação (binding), que descrevecomo as mensagens deveriam ser enviadas, e a definição do set de mensagens que podem ser recebidas/enviadas naquela localização (um contrato de serviço)
+
+### WCF Service Library - resumo
 - Cria uma dll que representa o serviço
 - Os serviços (interfaces) do WCF devem estar anotados com [ServiceContract]
     - System.ServiceModel
@@ -37,3 +43,4 @@
 
 ###Fontes:
 - https://cursos.alura.com.br/course/wcf-framework
+- https://docs.microsoft.com/pt-br/dotnet/framework/wcf/fundamental-concepts
