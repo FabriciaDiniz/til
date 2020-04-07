@@ -27,6 +27,7 @@ Notas para curso de testes da Udemy, disponível em:  https://www.udemy.com/cour
     - 2 representa perguntas de sim/não (2 reusltados possíveis)
     - n representa o número de perguntas que necessitam ser respondidas para gerar o resultado
     - esse número pode ser reduzido com base no número de casos de testes e das condições que precisam ser testadas
+    - pode-se também calcular o núm de casos de teste como o núm de ações a serem executadas + 1
 - é representada pela tabela de regras, com as condições e as "ações" (resultados) como coluna principal e as diferentes combinações de resultados (true ou false para cada pergunta) nas demais colunas
 
 ## State Transition Testing
@@ -38,3 +39,36 @@ Notas para curso de testes da Udemy, disponível em:  https://www.udemy.com/cour
 - normalmente o número de casos de teste pode ser inferido calculando o número de estados finais (dead states) do sistema, estados que não levam a outros
     - o núm de casos de teste será igual ao núm de estados finais
     - os casos de teste consistiriam em sair do estado inicial e chegar nos estados finais por caminhos distintos
+
+## Use Case Testing
+- os testes são derivados de casos de uso (descrição da interação entre atores em um sistema)
+
+
+### White Box Testing
+- observa a estrutura interna do sistema
+- também chamada de architectured/structured base testing
+
+## Statement coverage
+- visa cobrir todas as linhas do código para obter 100% de cobertura
+    - cobertura = núm de linhas testadas / núm total de linhas
+- não é uma técnica muito eficiente
+- o melhor é conseguir a cobertura de 100% com o mínimo de casos de teste possível
+
+## Decision Coverage
+- também chamado de branch coverage
+- testa todas as saídas de condicionais (decision outcomes) no código
+    - cobertura = saídas de condicionais cobertas / núm total de saídas de condicionais
+- não é possível atingir 100% de cobertura com menos de 2 casos de teste
+- 100% de decision coverage implica em 100% de statement coverage, mas o contrário não é verdade
+- desenhar o fluxograma ajuda a visualizar quantos e quais casos de teste devem ser aplicados
+
+## Condition Coverage
+- testa cada condição nos casos de true/false presentes no código
+    - é mais minucioso do que decision e statement coverage
+    - uma decisão pode conter mais de uma condição (concatenadas com or/and)
+
+## Path Coverage
+- testa todos os caminhos possíveis no código
+    - assim como em decision coverage, desenhar um fluxograma ajuda a entender os diferentes caminhos que devem ser testados e quantos casos de teste devem ser usados
+- é mais robusto e mais minucioso, mas às vezes é impraticável de aplicar
+    - nos casos mais complexos, o objetivo não é alcançar 100% de cobertura, apenas cobrir alguns dos caminhos possíveis
