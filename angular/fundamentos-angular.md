@@ -2,7 +2,7 @@
 - Foca em evergreen browsers, suportando sempre as duas últimas versões vigentes dos navegadores do mercado
     - apenas remove os testes de integração com navegadores não suportados
 - Possui 8 blocos principais
-    - componentes: basicamente, são a view, encapsulam template, metadata, dado a ser mostrado na tela (data binding) e comportamento da view
+    - componentes: basicamente, são a view; encapsulam template, metadata, dado a ser mostrado na tela (data binding) e comportamento da view
     - diretivas: responsável por modificar elementos do DOM e/ou seu comportamento; os componentes também são diretivas
     - roteamento: responsável pela navegação entre diferentes telas de um sistema
     - serviços: contém a lógica de negócio e podem se conectar com o backend
@@ -63,12 +63,26 @@
     - se o componente tiver uma propriedade de input, é mais interessante utilizar o ngOnChanges para carregar os valores no lugar do ngOnInit, já que este não é chamado
 
 
+## Angular CLI
+- Funções:
+    - cria toda a estrutura do projeto
+    - gera página html, arquivos typescript, CSS e de teste unitários iniciais
+    - cria o arquivo package.json com todas as dependências do Angular
+    - instala todas as dependências do node (npm install)
+    - configura o Karma para executar os testes unitários com Jasmine
+    - configura o Protractor para executar os testes end-to-end (e2e)
+    - inicializa um repositório git no projeto e faz o commit inicial
+    - cria todos os arquivos necessários para fazer o build da aplicação para produçãol
+
+
 ## Criação de um projeto
 - Requisitos
     - Node.js
     - Angular CLI
+
 - ng new project_name
     - cria uma novo projeto
+    - alternativamente, você pode criar a pasta manualmente e então dar um ng init dentro da pasta
 - ng g c component_name
     - cria um novo component com os arquivos necessários e atualiza o app.module para que o novo component seja reconhecido
 - ng s ou ng serve
@@ -79,6 +93,17 @@
 - ng g s service_name
     - cria o esqueleto para um serviço
     - pode-se usar <dir>/service_name para criar o serviço dentro de uma pasta específica e melhorar a organização do projeto
+
+- Diretórios
+    - config:  contém configurações para deploy/build e teste
+    - dist: onde é gerado o build da aplicação
+        - é ignorado pelo git
+    - e2e: contém os scripts para testes end-to-end
+    - node_modules: contém os pacotes npm da app (package.json)
+        - ignorado pelo git
+    - public: diretório genérico que contém um arquivo .npmignore
+    - src: diretório do código fonte da aplicação
+        - contém código typescript/javascript, CSS, imagens e templates HTML
 
 
 ### Fontes
