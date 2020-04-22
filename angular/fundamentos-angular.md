@@ -47,6 +47,36 @@
     - styles: caminho para o arquivo css do componente ou estilo hardcoded
         - se for só um estilo, pode deixar hardcoded lembrando de utilizar templates de string (crase)
 - Os estilos declarados em styles.css do módulo app estão dísponíveis para todos os componentes da aplicação
+- O operador Elvis ("?" logo após o nome de uma variável que pode ou não ser nula como em cliente.endereco?.estado) checa se o valor da variável em questão é nulo e a exibe caso não seja, evitando que a chamada a uma variável nula levante erros na hora de executar
+
+- As diretivas são formas de passar instruções para o template
+    - os componentes também são diretivas, dizendo-se que são diretivas com template
+    - as diretivas normalmente são compartilhadas por toda a aplicação
+        - pode ser criada dentro da pasta shared ou dentro de uma pasta só para diretivas
+    - existem as diretivas estruturais, que são utilizadas para modificar a estrutura do DOM e/ou código HTML
+        - ngFor
+        - ngIf
+            - destrói o elemento com a alteração de true/false, o que significa que isso pode ser custoso para o sistema em termos de performance
+                - recomendado para árvores de elementos grandes
+                - uma alternativa é trabalhar com a propriedade hidden, fazendo um binding de propriedade, quando a árvore de elementos é pequena ou o custo de criar a árvore de elementos seja grande
+            - cria um template por baixo dos panos com um property binding na variável "ngIf"
+        - ngSwitch
+            - usado com o property binding para ficar escutando o valor da expressão
+    - existem as diretivas de atributos, que interagem com o elemento no qual foram aplicadas
+        - ng-class
+            - utiliza property binding associado a um objeto com todas as classes que se quer aplicar
+            - é uma forma mais legível de adicionar diversos class bindings a um elemento
+        - ng-style
+            - mais um tipo de class binding, com o intuito de aplicar estilos a um elemento html
+            - a sintaxe é semelhante à do ng-class
+        - ng-content
+            - mostra conteúdos passados externamente para o template, no caso conteúdos incluídos dentro da tag de chamada do componente
+            - para exibir múltiplos conteúdos, pode-se fazer um select para diferentes seletores
+                - caso existam várias divs com o mesmo seletor, o Angular concatena essas divs
+    - ao criar uma diretiva de atributos, é preciso importar a classe ElementRef, que é quem pega a referência do elemento html onde a diretiva é chamada, e a classe Renderer, que é a classe que de fato irá modificar o elemento
+    - quando se quer ouvir eventos relacionados ao elemento que contém a diretiva, usa-se o metadado HostListener
+        - caso seja preciso modificar um atributo em função de um evento (como o mouse estar em cima do elemento) e desfazer a modificação quando o evento for encerrado, o mais elegante é usar o metadado HostBinding, que associa uma propridade a uma variável
+    - ao criar uma diretiva estrutural, é preciso importar as classes TemplateRef, que pega a referência da tag onde a diretiva será chamada, e ViewContainerRef, que permite acessar as informações de dentro do elemento, essencialmente as informações com as quais queremos trabalhar
 
 
 ## Ciclo de vida de um componente
@@ -93,6 +123,19 @@
 - ng g s service_name
     - cria o esqueleto para um serviço
     - pode-se usar <dir>/service_name para criar o serviço dentro de uma pasta específica e melhorar a organização do projeto
+- ng build
+    - gera a build de desenvolvimento no diretório dist
+    - o build de dev não é ofuscado nem minificados
+    - alternativas:
+        - ng build --target=development --environment=dev
+        - ng build --dev --e=dev
+        - ng build --dev
+- ng build --target=production --environment=prod
+    - gera o build de produção
+    - ofusca e minifica o código JS da aplicação
+    - alternativas:
+        - ng build --prod --e=prod
+        - ng build --prod
 
 - Diretórios
     - config:  contém configurações para deploy/build e teste
