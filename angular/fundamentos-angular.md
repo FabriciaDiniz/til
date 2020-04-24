@@ -48,6 +48,13 @@
         - se for só um estilo, pode deixar hardcoded lembrando de utilizar templates de string (crase)
 - Os estilos declarados em styles.css do módulo app estão dísponíveis para todos os componentes da aplicação
 - O operador Elvis ("?" logo após o nome de uma variável que pode ou não ser nula como em cliente.endereco?.estado) checa se o valor da variável em questão é nulo e a exibe caso não seja, evitando que a chamada a uma variável nula levante erros na hora de executar
+- Para fazer injeção de dependências, é preciso adicionar o decorator @Injectable à classe que será injetada, adicioná-la como um provider no app module e passa-la no construtor da classe que a injetará
+    - no padrão singleton só há uma instância da classe para toda a aplicação
+- A anotação @Input permite que um componente-pai possa passar informações para o componente-filho
+- A anotação @Output permite que um componente-filho possa passar informações para o componente-pai
+- O EventEmitter é utilizado para passr informações entre componentes
+    - um componente é o emissor e todos aqueles componentes que estiverem "inscritos" no evento são assinantes e serão notificados sempre que um valor for emitido
+    - para passar informações entre componentes utilizando instâncias diferentes de um serviço através do EventEmitter é preciso declarar a variável associada ao EventEmitter como estática
 
 - As diretivas são formas de passar instruções para o template
     - os componentes também são diretivas, dizendo-se que são diretivas com template
@@ -77,6 +84,12 @@
     - quando se quer ouvir eventos relacionados ao elemento que contém a diretiva, usa-se o metadado HostListener
         - caso seja preciso modificar um atributo em função de um evento (como o mouse estar em cima do elemento) e desfazer a modificação quando o evento for encerrado, o mais elegante é usar o metadado HostBinding, que associa uma propridade a uma variável
     - ao criar uma diretiva estrutural, é preciso importar as classes TemplateRef, que pega a referência da tag onde a diretiva será chamada, e ViewContainerRef, que permite acessar as informações de dentro do elemento, essencialmente as informações com as quais queremos trabalhar
+
+- Os serviços são classes responsáveis por buscar e enviar dados ao servidor
+    - evitam repetir código
+    - contém a lógica de negócio e classes utilitárias
+    - caso um serviço seja adicionado como provider nos submódulos que o utilizam, não é preciso declará-lo como provider no app module, apenas adicionar os submódulos ao imports do app module
+    - é possível adicionar o serviço no @Component dos componentes individuais, porém nesse caso será criada uma instância específica apenas para aquele componente
 
 
 ## Ciclo de vida de um componente
