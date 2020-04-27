@@ -52,11 +52,11 @@
     - no padrão singleton só há uma instância da classe para toda a aplicação
 - A anotação @Input permite que um componente-pai possa passar informações para o componente-filho
 - A anotação @Output permite que um componente-filho possa passar informações para o componente-pai
-- O EventEmitter é utilizado para passr informações entre componentes
+- O EventEmitter é utilizado para passar informações entre componentes
     - um componente é o emissor e todos aqueles componentes que estiverem "inscritos" no evento são assinantes e serão notificados sempre que um valor for emitido
     - para passar informações entre componentes utilizando instâncias diferentes de um serviço através do EventEmitter é preciso declarar a variável associada ao EventEmitter como estática
 
-- As diretivas são formas de passar instruções para o template
+- Diretivas são formas de passar instruções para o template
     - os componentes também são diretivas, dizendo-se que são diretivas com template
     - as diretivas normalmente são compartilhadas por toda a aplicação
         - pode ser criada dentro da pasta shared ou dentro de uma pasta só para diretivas
@@ -85,11 +85,30 @@
         - caso seja preciso modificar um atributo em função de um evento (como o mouse estar em cima do elemento) e desfazer a modificação quando o evento for encerrado, o mais elegante é usar o metadado HostBinding, que associa uma propridade a uma variável
     - ao criar uma diretiva estrutural, é preciso importar as classes TemplateRef, que pega a referência da tag onde a diretiva será chamada, e ViewContainerRef, que permite acessar as informações de dentro do elemento, essencialmente as informações com as quais queremos trabalhar
 
-- Os serviços são classes responsáveis por buscar e enviar dados ao servidor
+- Serviços são classes responsáveis por buscar e enviar dados ao servidor
     - evitam repetir código
     - contém a lógica de negócio e classes utilitárias
     - caso um serviço seja adicionado como provider nos submódulos que o utilizam, não é preciso declará-lo como provider no app module, apenas adicionar os submódulos ao imports do app module
     - é possível adicionar o serviço no @Component dos componentes individuais, porém nesse caso será criada uma instância específica apenas para aquele componente
+
+- Pipes (|) transformam um valor que será mostrado em um template
+    - eles são adicionados dentro da interpolação, após o nome da variável de interesse
+    - existem diversos pipes predefinidos, e é poassível passar parâmetros para eles também
+        - {{ valor | currency:'BRL':true }} - mostra R$ e o valor
+    - é possível aninhar diversos pipes para a mesma variável
+        - nesse caso, a ordem de aplicação dos pipes é a ordem de declaração
+    - para criar um pipe customizado, usa-se o ng g pipe (ou só p) nome_pipe
+        - é preciso declarar o pipe no módulo que for utilizá-lo, na parte de declaration
+        - o pipe precisa ter o decorator @Pipe, implementar PipeTransform e sobrescrever o método transform
+    - para aplicar internacionalização aos pipes (porque o padrão é o modelo americano) é preciso adicionar um provider ao app module que utiliza o LOCALE_ID do angular core para fazer essa internacionalização
+        - fica assim: { provide: LOCALE_ID, useValue: 'pt-BR }
+        - essa informação também pode ser obtida por meio de um serviço de settings
+    - não é pra usar pipe pra filtrar arrays
+        - a forma correta é implementar a lógica do filtro em um método que retorne o array filtrado
+    - um pipe puro não enxerga as modificações feitas no objeto que é passado para o transform
+    - um pipe impuro pode enxergar essas modificações
+        - é só adicionar o metadado pure: false
+    - o pipe async é utilizado quando o objeto passado ao template é obtido de maneira assícrona, de forma que não quebre o template
 
 
 ## Ciclo de vida de um componente
