@@ -1,3 +1,8 @@
+- Fluxo de requisição
+  - arquivo settings.py indica o arquivo principal de mapeamento de urls (urls.py)
+  - urls.py contém direcionamento para os controllers específicos de acordo com a url
+  - os controllers (app/views.py) vão indicar os métodos a serem executados de acordo com a url e utilizaram os serializers para formatar os dados
+  - os serializers vão indicar a forma como os dados deverão ser retornados (ou transformados caso a requisição seja POST/PATCH) na response
 - Qualquer configuração global para uma API REST framework são mantidas em um único dicionário de configuração chamado REST_FRAMEWORK no arquivo settings.py.
 - rest_framework deve ser adicionado ao INSTALLED_APPS
 - A serialização é utilizada para auxiliar na representação de dados, e é uma boa prática REST utilizar relações por hiperlink (invés de por PK, por exemplo)

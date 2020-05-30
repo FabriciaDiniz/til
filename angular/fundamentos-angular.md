@@ -27,6 +27,8 @@
     - o exports define quais diretivas devem ser expostas para outros módulos
 - Módulos de funcionalidades ajudam na organização do código, impedindo que o módulo raiz fique muito cheio de componentes
     - só o módulo é importado para o módulo raiz, no lugar de todos os componentes que ele contém
+    - os imports precisam ser quase os mesmos do app.module, com exceção do BrowserModule, que só é importado no app.module; no módulo de funcionalidade se importa o CommonModule
+        - caso o routerlink esteja sendo utilizado no html, é preciso também importar o RouterModule
 - Existem 4 formas de fazer o data binding
     - interpolação (interpolation): mostra o valor de um atributo ou um método do componente no template
         - {{ valor }}
@@ -41,6 +43,7 @@
         - [(ngModel)] = "propriedade"
             - binding de evento e propriedade juntos
             - o ngModel é uma representação de uma entidade, uma diretiva de FormsModule
+              - para que o NgModel funcione, é preciso adicionar o FormsModule a todos os arquivos de module da aplicação
 - Um componente possui os seguintes metadados:
     - selector: o nome do seletor que será usado para referenciar esse módulo
     - template/templateUrl: caminho para o arquivo html associado ao componente ou pequeno trecho de arquivo html hardcoded
@@ -56,7 +59,7 @@
     - um componente é o emissor e todos aqueles componentes que estiverem "inscritos" no evento são assinantes e serão notificados sempre que um valor for emitido
     - para passar informações entre componentes utilizando instâncias diferentes de um serviço através do EventEmitter é preciso declarar a variável associada ao EventEmitter como estática
 
-- Diretivas são formas de passar instruções para o template
+- **Diretivas** são formas de passar instruções para o template
     - os componentes também são diretivas, dizendo-se que são diretivas com template
     - as diretivas normalmente são compartilhadas por toda a aplicação
         - pode ser criada dentro da pasta shared ou dentro de uma pasta só para diretivas
@@ -85,13 +88,13 @@
         - caso seja preciso modificar um atributo em função de um evento (como o mouse estar em cima do elemento) e desfazer a modificação quando o evento for encerrado, o mais elegante é usar o metadado HostBinding, que associa uma propridade a uma variável
     - ao criar uma diretiva estrutural, é preciso importar as classes TemplateRef, que pega a referência da tag onde a diretiva será chamada, e ViewContainerRef, que permite acessar as informações de dentro do elemento, essencialmente as informações com as quais queremos trabalhar
 
-- Serviços são classes responsáveis por buscar e enviar dados ao servidor
+- **Serviços** são classes responsáveis por buscar e enviar dados ao servidor
     - evitam repetir código
     - contém a lógica de negócio e classes utilitárias
     - caso um serviço seja adicionado como provider nos submódulos que o utilizam, não é preciso declará-lo como provider no app module, apenas adicionar os submódulos ao imports do app module
     - é possível adicionar o serviço no @Component dos componentes individuais, porém nesse caso será criada uma instância específica apenas para aquele componente
 
-- Pipes (|) transformam um valor que será mostrado em um template
+- **Pipes** (|) transformam um valor que será mostrado em um template
     - eles são adicionados dentro da interpolação, após o nome da variável de interesse
     - existem diversos pipes predefinidos, e é poassível passar parâmetros para eles também
         - {{ valor | currency:'BRL':true }} - mostra R$ e o valor
@@ -110,19 +113,41 @@
         - é só adicionar o metadado pure: false
     - o pipe async é utilizado quando o objeto passado ao template é obtido de maneira assícrona, de forma que não quebre o template
 
+- **Rotas**
+    - cada rota carrega um componente específico
+    - o Angular lê a rota, identifica, e chama o componente responsável por ela
+    - o arquivo básico de rotas é o app.routing.ts
+    - configuração das rotas
+        - precisa ser criado o serviço que fará a conexão com o backend
+        - o roteamento é feito a partir de um array de Routes (do pacote @angular/router)
+            - precisa declarar o path e o componente que deverá ser renderizado para cada rota
+            - parâmetros hardcoded (como receitas/nova) devem ser declarados antes de parâmetros dinâmicos para evitar colisão de rotas uma vez que as rotas são avaliadas na ordem em que foram declaradas
+        - adicionalmente ao array de rotas, é preciso ter um objeto do tipo ModuleWithProviders, que é quem contém a definição e a configuração das rotas da aplicação
+            - o objeto recebe RouterModule.forRoot(), que indica que é o ponto de roteamento da raiz da aplicação
+            - caso o roteamento seja de um módulo de funcionalidade, usa-se o .forChild()
+        - por fim, o html precisa receber a tag <router-outlet>, que é onde o componente da rota será renderizado
+        - no component a ser renderizado, é preciso ajustar o html para mostrar os elementos e adicionar a lógica de conexão (chamada ao serviço) com o backend no component.ts
+    - a diretiva routerLink define no template a chamada para as rotas
+    - em rotas raiz do projeto, a '/' é opcional
+    - a classe ActivatedRoute é utilizada para acessar elementos da rota no componente
+        - para usar é preciso de inscrever (subscribe) no params da ActivatedRoute no ngOnInit e a partir daí pegar os parâmetros que foram passados na url
+            - é importante de desinscrever no ngOnDestroy
+    - **Guarda rotas** têm a função de executar hooks referentes ao acesso às rotas
+      - é uma classe de serviço normal e é importante anotá-la com o _@Injectable_
+
 
 ## Ciclo de vida de um componente
 - Eventos (hooks)
-    - ngOnChanges: antes do ngOnInit e quando o valor property-binding é atualizado
-    - ngOnInit: disparado quando o componente é inicializado
-    - ngDoCheck: a cada ciclo de verificação de mudanças
-    - ngAfterContentInit: depois de inserir conteúdo externo na view
-    - ngAfterContentChecked: a cada verificação do conteúdo inserido
-    - ngAfterViewChecked: a cada verificação de conteúdo/conteúdo filho
-    - ngOnDestroy: antes da diretiva/componente ser destruído
+    - OnChanges: antes do OnInit e quando o valor property-binding é atualizado
+    - OnInit: disparado quando o componente é inicializado
+    - DoCheck: a cada ciclo de verificação de mudanças
+    - AfterContentInit: depois de inserir conteúdo externo na view
+    - AfterContentChecked: a cada verificação do conteúdo inserido
+    - AfterViewChecked: a cada verificação de conteúdo/conteúdo filho
+    - OnDestroy: antes da diretiva/componente ser destruído
 
     - é uma boa prática colocar na classe que ela implementa as interfaces dos hooks que estarão sendo escutados
-    - se o componente tiver uma propriedade de input, é mais interessante utilizar o ngOnChanges para carregar os valores no lugar do ngOnInit, já que este não é chamado
+    - se o componente tiver uma propriedade de input, é mais interessante utilizar o OnChanges para carregar os valores no lugar do OnInit, já que este não é chamado
 
 
 ## Angular CLI
