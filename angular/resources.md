@@ -15,3 +15,8 @@
 - [Scheduling: setTimeout and setInterval](https://javascript.info/settimeout-setinterval)
 - [Map and Set](https://javascript.info/map-set)
 - [LocalStorage, sessionStorage](https://javascript.info/localstorage)
+- [RxJS](https://rxjs.dev/guide/overview)
+- [Currying](https://javascript.info/currying-partials)
+- [Hoisting](https://www.w3schools.com/js/js_hoisting.asp)
+- [Event loop](https://javascript.info/event-loop)
+- [Comments](https://javascript.info/comments)
