@@ -49,6 +49,7 @@
     - template/templateUrl: caminho para o arquivo html associado ao componente ou pequeno trecho de arquivo html hardcoded
     - styles: caminho para o arquivo css do componente ou estilo hardcoded
         - se for só um estilo, pode deixar hardcoded lembrando de utilizar templates de string (crase)
+        - o metadado styleUrls, que também é um array de strings, aceita também o caminho para um CSS externo
 - Os estilos declarados em styles.css do módulo app estão dísponíveis para todos os componentes da aplicação
 - O operador Elvis ("?" logo após o nome de uma variável que pode ou não ser nula como em cliente.endereco?.estado) checa se o valor da variável em questão é nulo e a exibe caso não seja, evitando que a chamada a uma variável nula levante erros na hora de executar
 - Para fazer injeção de dependências, é preciso adicionar o decorator @Injectable à classe que será injetada, adicioná-la como um provider no app module e passa-la no construtor da classe que a injetará
@@ -159,7 +160,10 @@
     - configura o Karma para executar os testes unitários com Jasmine
     - configura o Protractor para executar os testes end-to-end (e2e)
     - inicializa um repositório git no projeto e faz o commit inicial
-    - cria todos os arquivos necessários para fazer o build da aplicação para produçãol
+    - cria todos os arquivos necessários para fazer o build da aplicação para produção
+    - é possível definir múltiplas configurações para um mesmo projeto Angular por meio da opção --configuration.
+        - ng build --configuration=myConfig *ou* ng build -c myConfig
+        - no arquivo angular.json, na seção da própria configuração vc define varias opções, inclusive qual arquivo "environment" ele deve usar.
 
 
 ## Criação de um projeto
